@@ -2,7 +2,8 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
 	def setup
-		@user = User.new(name: "Example User", email: "user@example.com")
+		@user = User.new(name: "Example User", email: "user@example.com",
+										 password: "foobar", password_confirmation: "foobar")
 	end
 
 	# Valid Presence
@@ -19,9 +20,9 @@ class UserTest < ActiveSupport::TestCase
     @user.email = "     "
     assert_not @user.valid?
   end
+
 	# Length Validation
-	
-	 test "name should not be too long" do
+	test "name should not be too long" do
 	  @user.name = "a" * 51
 	  assert_not @user.valid?
 	end
@@ -30,6 +31,7 @@ class UserTest < ActiveSupport::TestCase
 	  @user.email = "a" * 244 + "@example.com"
 	  assert_not @user.valid?
 	end
+
 	# Format validation
 	test "email validation should accept valid addresses" do
 		valid_addresses = %w[user@example.com USER@foo.COM A_US-ER@foo.bar.org first.last@foo.jp alice+bob@baz.cn]
@@ -48,11 +50,17 @@ class UserTest < ActiveSupport::TestCase
       assert_not @user.valid?, "#{invalid_address.inspect} should be invalid"
     end
   end
+
   # Uniqueness validation
   test "email addresses should be unique" do
     duplicate_user = @user.dup
     duplicate_user.email = @user.email.upcase
     @user.save
     assert_not duplicate_user.valid?
+  end
+  # Minimum password length
+  test "password should have a minimum length" do
+    @user.password = @user.password_confirmation = "a" * 5
+    assert_not @user.valid?
   end
 end
