@@ -26,6 +26,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", user_path(@user)
     delete logout_path
     assert_not is_logged_in?
+    # Simulate a user clicking logout in a second window.
+    delete logout_path
     assert_redirected_to root_path
     follow_redirect!
     assert_select "a[href=?]", login_path
@@ -34,3 +36,11 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   end
   
 end
+
+
+
+
+
+
+
+
