@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 # User Controller
   resources :users
 #  Account activations resource
- resources :account_activations, only: [:edit]
- resources :password_resets,     only: [:new, :create, :edit, :update]
+  resources :account_activations, only: [:edit]
+  resources :password_resets,     only: [:new, :create, :edit, :update]
+  resources :microposts,          only: [:create, :destroy]
 end
